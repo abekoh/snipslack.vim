@@ -1,0 +1,1 @@
+# snippost.vim
