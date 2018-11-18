@@ -14,8 +14,7 @@ function! snippost#post_slack(filepath, filelastline) range
     let title = filename
   else
     let file = tempname()
-    let lines = getline(a:firstline, a:lastline)
-    call writefile(lines, file)
+    call writefile(getline(a:firstline, a:lastline), file)
     let title = printf('%s#L%d-L%d', filename, a:firstline, a:lastline)
   endif
   let command = "curl -s -F file=@" . file
