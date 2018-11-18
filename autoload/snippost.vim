@@ -22,9 +22,9 @@ function! snippost#post_slack(filepath, filelastline) range
         \. " -F filename=" . filename
         \. " -F title=" . title
         \. " -F channels=#general"
-        \. " -H \"Authorization: Bearer xxxxx\""
+        \. " -H \"Authorization: Bearer " . g:snippost_slack_token . "\""
         \. " https://slack.com/api/files.upload"
-  let response =  system(command)
+  let response = system(command)
   echo response
 endfunction
 
