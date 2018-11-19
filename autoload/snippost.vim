@@ -27,5 +27,10 @@ function! snippost#post_slack(filepath, filelastline) range
   echo response
 endfunction
 
+function! s:snippost#get_github_url()
+  let command = "git config --get remote.origin.url"
+  let res = system(command)
+endfunction
+
 let &cpo = s:save_cpo
 unlet s:save_cpo
