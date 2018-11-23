@@ -20,8 +20,8 @@ function! snipslack#post_slack(filepath, filelastline) range
   let command = "curl -s -F file=@" . file
         \. " -F filename=" . filename
         \. " -F title=" . title
-        \. " -F channels=" . g:snipslack_slack_channel
-        \. " -H \"Authorization: Bearer " . g:snipslack_slack_token . "\""
+        \. " -F channels=" . g:snipslack_channel
+        \. " -H \"Authorization: Bearer " . g:snipslack_token . "\""
         \. " https://slack.com/api/files.upload"
   let response = system(command)
   echo response
