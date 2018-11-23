@@ -30,8 +30,10 @@ endfunction
 function! snippost#get_github_url(filepath)
   let dirpath = fnamemodify(a:filepath, ':p:h')
   let filename = fnamemodify(a:filepath, ':t')
-  " TODO: change destination
-  let remote_url = system('cd ' . dirpath . '; git config --get remote.origin.url')
+
+  let cd_command = 'cd' . dirpath . '; '
+  " TODO: 対象ディレクトリがgit管理、かつgithub originかチェック
+  let remote_url = system(cd_command . 'git config --get remote.origin.url')
   if v:shell_error > 0
     echo 'command error'
     return
@@ -43,10 +45,15 @@ function! snippost#get_github_url(filepath)
     let list = matchlist(remote_url, '\v^git\@(.*):(.{-})(.git|)\n$')
     let url = 'https://' . list[1] . '/' . list[2]
   endif
-  let branch = system('cd ' . dirpath . '; git rev-parse HEAD')
-  let git_dirpath = system('cd ' . dirpath . '; git rev-parse --show-prefix')
-  let url .= '/blob' . branch . '/' . git_dirpath . filename
+  let branch = system(cd_command . 'git rev-parse HEAD')
+  let git_dirpath = system(cd_command . '; git rev-parse --show-prefix')
+  let url .= '/blob/' . branch . '/' . git_dirpath . filename
+  let url = substitute(url, '\n', '', 'g')
   echo url
+endfunction
+
+function! s:run_git(command)
+
 endfunction
 
 let &cpo = s:save_cpo
