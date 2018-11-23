@@ -1,1 +1,1 @@
-# snippost.vim
+# snipslack.vim

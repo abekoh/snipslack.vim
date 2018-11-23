@@ -1,13 +1,13 @@
 scriptencoding utf-8
 
-if !exists('g:snippost#loaded_snippost')
+if !exists('g:snipslack#loaded_snipslack')
   finish
 endif
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! snippost#post_slack(filepath, filelastline) range
+function! snipslack#post_slack(filepath, filelastline) range
   let filename = fnamemodify(a:filepath, ':t')
   if a:firstline == 1 && a:lastline == a:filelastline
     let file = a:filepath
@@ -20,18 +20,18 @@ function! snippost#post_slack(filepath, filelastline) range
   let command = "curl -s -F file=@" . file
         \. " -F filename=" . filename
         \. " -F title=" . title
-        \. " -F channels=" . g:snippost_slack_channel
-        \. " -H \"Authorization: Bearer " . g:snippost_slack_token . "\""
+        \. " -F channels=" . g:snipslack_slack_channel
+        \. " -H \"Authorization: Bearer " . g:snipslack_slack_token . "\""
         \. " https://slack.com/api/files.upload"
   let response = system(command)
   echo response
 endfunction
 
-function! snippost#get_github_url(filepath)
+function! snipslack#get_github_url(filepath)
   let dirpath = fnamemodify(a:filepath, ':p:h')
   let filename = fnamemodify(a:filepath, ':t')
 
-  let cd_command = 'cd' . dirpath . '; '
+  let cd_command = 'cd ' . dirpath . '; '
   " TODO: 対象ディレクトリがgit管理、かつgithub originかチェック
   let remote_url = system(cd_command . 'git config --get remote.origin.url')
   if v:shell_error > 0
