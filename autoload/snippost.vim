@@ -4,9 +4,6 @@ if !exists('g:snippost#loaded_snippost')
   finish
 endif
 
-let s:save_cpo = &cpo
-set cpo&vim
-
 function! snippost#post_slack(filepath, filelastline) range
   let filename = fnamemodify(a:filepath, ':t')
   if a:firstline == 1 && a:lastline == a:filelastline
@@ -26,6 +23,3 @@ function! snippost#post_slack(filepath, filelastline) range
   let response = system(command)
   echo response
 endfunction
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
