@@ -4,9 +4,6 @@ if !exists('g:snipslack#loaded_snipslack')
   finish
 endif
 
-let s:save_cpo = &cpo
-set cpo&vim
-
 function! snipslack#post_slack(filepath, filelastline) range
   let filename = fnamemodify(a:filepath, ':t')
   if a:firstline == 1 && a:lastline == a:filelastline
@@ -55,6 +52,3 @@ endfunction
 function! s:run_git(command)
 
 endfunction
-
-let &cpo = s:save_cpo
-unlet s:save_cpo
