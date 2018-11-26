@@ -38,14 +38,17 @@ function! s:on_exit(ns, exitval) abort
   endif
 endfunction
 
-function! s:make_post_command(file, filename, title) abort
+function! s:make_post_command(file, filename, title, github_url) abort
   let command = ['curl', '-s',
         \ '-F', 'file=@' . a:file,
         \ '-F', 'filename=' . a:filename,
         \ '-F', 'title=' . a:title,
         \ '-F', 'channels=' . g:snipslack_channel,
-        \ '-F', 'token=' . g:snipslack_token,
-        \ 'https://slack.com/api/files.upload']
+        \ '-F', 'token=' . g:snipslack_token]
+  if a:github_url isnot# ''
+    let command += ['-F', 'initial_comment="<' . a:github_url . '|Remote URL">']
+  endif
+  let command += ['https://slack.com/api/files.upload']
   return command
 endfunction
 
@@ -73,34 +76,43 @@ function! snipslack#post(filepath, filelastline) range abort
     call writefile(getline(a:firstline, a:lastline), file)
     let title = printf('%s#L%d-L%d', filename, a:firstline, a:lastline)
   endif
+  let github_url = call('s:get_github_url', [a:filepath])
   " make post command
-  let command = call('s:make_post_command', [file, filename, title])
+  let command = call('s:make_post_command', [file, filename, title, github_url])
   " run command
   call s:Promise.new(funcref('s:executor', [command]))
         \.then({ v -> s:echo_success_message(v.stdout[0]) })
         \.catch({ v -> s:echo_failure_message(v.stderr[0]) })
 endfunction
 
-function! s:get_github_url(filepath)
+function! s:get_github_url(filepath) abort
   let dirpath = fnamemodify(a:filepath, ':p:h')
   let filename = fnamemodify(a:filepath, ':t')
-
   let cd_command = 'cd ' . dirpath . '; '
-  " TODO: 対象ディレクトリがgit管理、かつgithub originかチェック
   let remote_url = system(cd_command . 'git config --get remote.origin.url')
   if v:shell_error > 0
     return
   endif
-  if match(remote_url, "http") == 0
-    let list = matchlist(remote_url, '\v^(.{-})(.git|)\n$')
-    let url = list[1]
+  if match(remote_url, "^http.*$") == 0
+    let host = matchlist(remote_url, '\v^.*\/\/(.*)\/.*$')[1]
+    let url = matchlist(remote_url, '\v^(.{-})(.git|)\n$')[1]
   else
-    let list = matchlist(remote_url, '\v^git\@(.*):(.{-})(.git|)\n$')
-    let url = 'https://' . list[1] . '/' . list[2]
+    let l = matchlist(remote_url, '\v^.*git\@(.{-})(:|\/)(.{-})(.git|)\n$')
+    let host = l[1]
+    let url = 'https://' . host . '/' . l[3]
+  endif
+  if match(g:snipslack_host_list, host) < 0
+    return
   endif
   let branch = system(cd_command . 'git rev-parse HEAD')
+  if v:shell_error > 0
+    return
+  endif
   let git_dirpath = system(cd_command . '; git rev-parse --show-prefix')
+  if v:shell_error > 0
+    return
+  endif
   let url .= '/blob/' . branch . '/' . git_dirpath . filename
   let url = substitute(url, '\n', '', 'g')
-  echo url
+  return url
 endfunction
