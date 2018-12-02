@@ -26,6 +26,11 @@ if !exists('g:snipslack_enable_github_url')
   let g:snipslack_enable_github_url = 1
 end
 
+if g:snipslack_enable_github_url is# 1 && !executable('git')
+  echoh ErrorMsg | echom '[snipslack] Please setup ''git'' command' | echoh None
+  finish
+endif
+
 if !exists('g:snipslack_github_remotes')
   let g:snipslack_github_remotes = ['origin']
 end
