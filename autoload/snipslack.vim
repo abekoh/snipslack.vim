@@ -8,33 +8,31 @@ endif
 let s:Job = vital#snipslack#import('System.Job')
 let s:JSON = vital#snipslack#import('Web.JSON')
 
-function! s:initialize() abort
-  if !executable('curl')
-    echoh ErrorMsg | echom '[snipslack] Please setup ''curl'' command' | echoh None
-    finish
-  endif
+if !executable('curl')
+  echoh ErrorMsg | echom '[snipslack] Please setup ''curl'' command' | echoh None
+  finish
+endif
 
-  if !exists('g:snipslack_token')
-    echoh ErrorMsg | echom '[snipslack] Please setup ''g:snipslack_token''' | echoh None
-    finish
-  end
+if !exists('g:snipslack_token')
+  echoh ErrorMsg | echom '[snipslack] Please setup ''g:snipslack_token''' | echoh None
+  finish
+end
 
-  if !exists('g:snipslack_channel')
-    echoh ErrorMsg | echom '[snipslack] Please setup ''g:snipslack_channel''' | echoh None
-  end
+if !exists('g:snipslack_channel')
+  echoh ErrorMsg | echom '[snipslack] Please setup ''g:snipslack_channel''' | echoh None
+end
 
-  if !exists('g:snipslack_enable_github_url')
-    let g:snipslack_enable_github_url = 1
-  end
+if !exists('g:snipslack_enable_github_url')
+  let g:snipslack_enable_github_url = 1
+end
 
-  if !exists('g:snipslack_github_remotes')
-    let g:snipslack_github_remotes = ['origin']
-  end
+if !exists('g:snipslack_github_remotes')
+  let g:snipslack_github_remotes = ['origin']
+end
 
-  if !exists('g:snipslack_github_domains')
-    let g:snipslack_github_domains = ['github.com']
-  end
-endfunction
+if !exists('g:snipslack_github_domains')
+  let g:snipslack_github_domains = ['github.com']
+end
 
 function! s:get_github_link(dirpath, filename, range) abort
   let cd_command = 'cd ' . a:dirpath . '; '
@@ -115,7 +113,6 @@ function! s:echo_failure_message(stderr) abort
 endfunction
 
 function! snipslack#post(filepath, filelastline) range abort
-  call s:initialize()
   let filename = fnamemodify(a:filepath, ':t')
   let dirpath = fnamemodify(a:filepath, ':p:h')
 
