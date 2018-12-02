@@ -88,7 +88,7 @@ function! s:get_github_link(dirpath, filename, range) abort
 
   let url .= '/blob/' . hash . '/' . git_dirpath . a:filename . a:range
 
-  let comment = '<' . url . '|remote link in ' . remote . '/' . branch . '>'
+  let comment = '<' . url . '|open URL in ' . remote . '/' . branch . '>'
   let comment = substitute(comment, '\n', '', 'g')
 
   return comment

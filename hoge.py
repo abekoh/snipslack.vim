@@ -1,0 +1,2 @@
+print('hoge')
+print('hoge')
