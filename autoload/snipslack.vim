@@ -22,6 +22,10 @@ if !exists('g:snipslack_channel')
   echoh ErrorMsg | echom '[snipslack] Please setup ''g:snipslack_channel''' | echoh None
 end
 
+if !exists('g:snipslack_limit_lines')
+  let g:snipslack_limit_lines = 1000
+end
+
 if !exists('g:snipslack_enable_github_url')
   let g:snipslack_enable_github_url = 1
 end
@@ -120,6 +124,11 @@ endfunction
 function! snipslack#post(filepath, filelastline) range abort
   let filename = fnamemodify(a:filepath, ':t')
   let dirpath = fnamemodify(a:filepath, ':p:h')
+
+  if a:lastline - a:filelastline + 1 > g:snipslack_limit_lines
+    echoh ErrorMsg | echom '[snipslack] Error: length of lines is greater than g:snipslack_limit_lines(=' . g:snipslack_limit_lines . ').' | echoh None
+    return
+  endif
 
   if a:firstline == 1 && a:lastline == a:filelastline
     if filereadable(a:filepath)
