@@ -1,2 +1,0 @@
-print('hoge')
-print('hoge')
