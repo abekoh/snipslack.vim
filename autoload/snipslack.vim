@@ -36,7 +36,7 @@ function! s:initialize() abort
   end
 endfunction
 
-function! s:get_github_link(dirpath, filename) abort
+function! s:get_github_link(dirpath, filename, range) abort
   let cd_command = 'cd ' . a:dirpath . '; '
 
   let remote = ''
@@ -79,12 +79,10 @@ function! s:get_github_link(dirpath, filename) abort
     return
   endif
 
-  let url .= '/blob/' . hash . '/' . git_dirpath . a:filename
-  let url = substitute(url, '\n', '', 'g')
+  let url .= '/blob/' . hash . '/' . git_dirpath . a:filename . a:range
 
-  let comment = url . 'remote repo''s file in ' . remote . '/' . branch
-
-  echom comment
+  let comment = '<' . url . '|remote link in ' . remote . '/' . branch . '>'
+  let comment = substitute(comment, '\n', '', 'g')
 
   return comment
 endfunction
@@ -97,7 +95,7 @@ function! s:make_post_command(file, filename, title, github_link) abort
         \ '-F', 'channels=' . g:snipslack_channel,
         \ '-F', 'token=' . g:snipslack_token]
   if a:github_link isnot# ''
-    let command += ['-F', a:github_link]
+    let command += ['--form-string', 'initial_comment=' . a:github_link]
   endif
   let command += ['https://slack.com/api/files.upload']
   return command
@@ -130,21 +128,23 @@ function! snipslack#post(filepath, filelastline) range abort
       call writefile(getline(1, a:filelastline), file)
       let title = filename
     end
+    let range = ''
   else
     let file = tempname()
     call writefile(getline(a:firstline, a:lastline), file)
-    let title = printf('%s#L%d-L%d', filename, a:firstline, a:lastline)
+    let range = '#L' . a:firstline . '-L' . a:lastline
+    let title = filename . range
   endif
 
   let github_url = ''
   if g:snipslack_enable_github_url is# 1 && filereadable(a:filepath) is# 1
-    let github_link = call('s:get_github_link', [dirpath, filename])
+    let github_link = call('s:get_github_link', [dirpath, filename, range])
   end
 
   let command = call('s:make_post_command', [file, filename, title, github_link])
 
-  " call s:Job.start(command, {
-  "   \ 'on_stdout': function('s:echo_success_message'),
-  "   \ 'on_stderr': function('s:echo_failure_message')
-  "   \})
+  call s:Job.start(command, {
+    \ 'on_stdout': function('s:echo_success_message'),
+    \ 'on_stderr': function('s:echo_failure_message')
+    \})
 endfunction
