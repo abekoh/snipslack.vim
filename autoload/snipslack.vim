@@ -97,10 +97,10 @@ endfunction
 function! s:make_post_command(file, filename, title, github_link) abort
   let command = ['curl', '-s',
         \ '-F', 'file=@' . a:file,
-        \ '-F', 'filename=' . a:filename,
-        \ '-F', 'title=' . a:title,
-        \ '-F', 'channels=' . g:snipslack_channel,
-        \ '-F', 'token=' . g:snipslack_token]
+        \ '--form-string', 'filename=' . a:filename,
+        \ '--form-string', 'title=' . a:title,
+        \ '--form-string', 'channels=' . g:snipslack_channel,
+        \ '--form-string', 'token=' . g:snipslack_token]
   if a:github_link isnot# ''
     let command += ['--form-string', 'initial_comment=' . a:github_link]
   endif
