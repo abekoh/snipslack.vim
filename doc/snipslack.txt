@@ -1,0 +1,69 @@
+*snipslack.txt*                            Post snippet into Slack easily.
+
+Version: 0.1.0
+Author: abekoh <abekoh.bcky@gmail.com>
+Repository: https://github.com/abekoh/snipslack.vim
+License: MIT license
+
+
+==============================================================================
+CONTENTS					*snipslack-contents*
+
+
+
+==============================================================================
+INTRODUCTION                                    *snipslack-introduction*
+
+*snipslack.vim* is a Vim plugin to post snippet into Slack easily.
+
+==============================================================================
+SETUP                                           *snipslack-setup*
+
+This plugin is require some commands:
+
+    - curl
+    - git (to get GitHub remote URL)
+
+so please install these commands.
+
+You have to prepare a Slack token for files.upload API.
+
+    https://api.slack.com/methods/files.upload
+
+Steps to get a token (last updated at Dec. 2, 2018):
+
+    1. Access https://api.slack.com/apps, click "Create New App" and create
+       an app in your workspace (or use existed app).
+
+    2. Click "OAuth & Permissions", find Scopes, select "Upload and modify
+       files as user (files:write:user)". After, click "Save Changes".
+
+    3. Scroll to top, click "Install App to Workspace" and authorize.
+
+    4. Then you can get "Oauth Access Token".
+
+If you got a token, add following into your vim/neovim setting file.
+>
+    let g:snipslack_token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+<
+Note that this config should not be open to the public. Handle this with care.
+
+And you have to set channel to post snippet. If post to #snippets, like this:
+>
+    let g:snipslack_channel = '#snippets'
+<
+If you want to post as DM, like this:
+>
+    let g:snipslack_channel = '@abekoh'
+<
+Now setup is finished, you can post snippets easily!
+If you'd like to know other settings, see |snipslack-variables|.
+
+==============================================================================
+USAGE                                           *snipslack-usage*
+
+==============================================================================
+VARIABLES                                       *snipslack-variables*
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:
