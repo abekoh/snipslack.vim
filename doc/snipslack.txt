@@ -1,4 +1,4 @@
-*snipslack.txt*                            Post snippet into Slack easily.
+*snipslack.txt*			Post snippet to Slack easily.
 
 Version: 0.1.0
 Author: abekoh <abekoh.bcky@gmail.com>
@@ -9,61 +9,114 @@ License: MIT license
 ==============================================================================
 CONTENTS					*snipslack-contents*
 
+Introduction			|snipslack-introduction|
+Setup				|snipslack-setup|
+Usage				|snipslack-usage|
+Variables			|snipslack-variables|
 
 
 ==============================================================================
-INTRODUCTION                                    *snipslack-introduction*
+INTRODUCTION					*snipslack-introduction* 
 
-*snipslack.vim* is a Vim plugin to post snippet into Slack easily.
+*snipslack.vim* is a Vim plugin to post snippet to Slack easily.
+
 
 ==============================================================================
-SETUP                                           *snipslack-setup*
+SETUP						*snipslack-setup*
 
 This plugin is require some commands:
 
-    - curl
-    - git (to get GitHub remote URL)
+	- curl
+	- git (to get GitHub remote URL)
 
 so please install these commands.
 
 You have to prepare a Slack token for files.upload API.
 
-    https://api.slack.com/methods/files.upload
+	https://api.slack.com/methods/files.upload
 
 Steps to get a token (last updated at Dec. 2, 2018):
 
-    1. Access https://api.slack.com/apps, click "Create New App" and create
-       an app in your workspace (or use existed app).
+	1. Access https://api.slack.com/apps, click "Create New App" and
+	   create an app in your workspace (or use existed app).
 
-    2. Click "OAuth & Permissions", find Scopes, select "Upload and modify
-       files as user (files:write:user)". After, click "Save Changes".
+	2. Click "OAuth & Permissions", find Scopes, select "Upload and modify
+	   files as user (files:write:user)". After, click "Save Changes".
 
-    3. Scroll to top, click "Install App to Workspace" and authorize.
+	3. Scroll to top, click "Install App to Workspace" and authorize.
 
-    4. Then you can get "Oauth Access Token".
+	4. Then you can get "Oauth Access Token".
 
 If you got a token, add following into your vim/neovim setting file.
 >
-    let g:snipslack_token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+	let g:snipslack_token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 <
-Note that this config should not be open to the public. Handle this with care.
+Note: this config should not be open to the public. Handle this with care.
 
 And you have to set channel to post snippet. If post to #snippets, like this:
 >
-    let g:snipslack_channel = '#snippets'
+	let g:snipslack_channel = '#snippets'
 <
 If you want to post as DM, like this:
 >
-    let g:snipslack_channel = '@abekoh'
+	let g:snipslack_channel = '@abekoh'
 <
-Now setup is finished, you can post snippets easily!
+Now setup is finished, you are able to post snippets.
+
 If you'd like to know other settings, see |snipslack-variables|.
 
 ==============================================================================
-USAGE                                           *snipslack-usage*
+USAGE						*snipslack-usage*
+
+If you want to post all of current buffer, use like this:
+>
+	:SnipSlack
+<
+If you want to post a part of current buffer, select with visual mode and type
+above command. As a result command will be like this:
+>
+	:'<,'>SnipSlack
+<
+If it succeeds, you can see snippet in Slack channel that you configured.
+
 
 ==============================================================================
-VARIABLES                                       *snipslack-variables*
+VARIABLES					*snipslack-variables*
+
+						*g:snipslack_token*
+g:snipslack_token
+	OAuth Access Token for your Slack workspace. If you want to know how
+	to get, see |snipslack-setup|.
+	Default: ''
+
+						*g:snipslack_channel*
+g:snipslack_channel
+	Slack channel to be posted snippets. Setup like '#channel' or
+	'@username'.
+	Default: ''
+
+						*g:snipslack_limit_lines*
+g:snipslack_limit_lines
+	Limit of snippet's line.
+	Default: 1000.
+
+						*g:snipslack_enable_github_url*
+g:snipslack_enable_github_url
+	Enable to post with GitHub URL. If set 0 to disable.
+	Default: 1
+
+						*g:snipslack_github_remotes*
+g:snipslack_github_remotes
+	List of git's remote names. When get GitHub URL, search from head of
+	this list.
+	Default: ['origin']
+
+						*g:snipslack_github_domains*
+g:snipslack_github_domains
+	List of remote git service domains. You can set domains that is
+	compatible to GitHub, like GitHub Enterprise.
+	Default: ['github.com']
+
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:
