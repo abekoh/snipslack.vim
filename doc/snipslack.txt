@@ -52,11 +52,11 @@ Note: this config should not be open to the public. Handle this with care.
 
 And you have to set channel to post snippet. If post to #snippets, like this:
 >
-	let g:snipslack_channel = '#snippets'
+	let g:snipslack_default_channel = '#snippets'
 <
 If you want to post as DM, like this:
 >
-	let g:snipslack_channel = '@abekoh'
+	let g:snipslack_default_channel = '@abekoh'
 <
 Now setup is finished, you are able to post snippets.
 
@@ -85,8 +85,8 @@ g:snipslack_token
 	to get, see |snipslack-setup|.
 	Default: ''
 
-						*g:snipslack_channel*
-g:snipslack_channel
+						*g:snipslack_default_channel*
+g:snipslack_default_channel
 	Slack channel to be posted snippets. Setup like '#channel' or
 	'@username'.
 	Default: ''

@@ -18,8 +18,8 @@ if !exists('g:snipslack_token')
   finish
 end
 
-if !exists('g:snipslack_channel')
-  echoh ErrorMsg | echom '[snipslack] Please setup ''g:snipslack_channel''' | echoh None
+if !exists('g:snipslack_default_channel')
+  echoh ErrorMsg | echom '[snipslack] Please setup ''g:snipslack_default_channel''' | echoh None
 end
 
 if !exists('g:snipslack_limit_lines')
@@ -99,7 +99,7 @@ function! s:make_post_command(file, filename, title, github_link) abort
         \ '-F', 'file=@' . a:file,
         \ '--form-string', 'filename=' . a:filename,
         \ '--form-string', 'title=' . a:title,
-        \ '--form-string', 'channels=' . g:snipslack_channel,
+        \ '--form-string', 'channels=' . g:snipslack_default_channel,
         \ '--form-string', 'token=' . g:snipslack_token]
   if a:github_link isnot# ''
     let command += ['--form-string', 'initial_comment=' . a:github_link]
