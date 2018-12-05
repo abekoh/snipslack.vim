@@ -20,7 +20,7 @@ call dein#add('abekoh/snipslack.vim')
 
 [vim-plug](https://github.com/junegunn/vim-plug):
 ```
-Plug 'abekoh/snipslack'
+Plug 'abekoh/snipslack.vim'
 ```
 
 ## Setup
