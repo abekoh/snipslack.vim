@@ -133,11 +133,11 @@ function! snipslack#post(filepath, filelastline) range abort
   if a:firstline == 1 && a:lastline == a:filelastline
     if filereadable(a:filepath)
       let file = a:filepath
-      let title = 'untitled'
+      let title = filename
     else
       let file = tempname()
       call writefile(getline(1, a:filelastline), file)
-      let title = filename
+      let title = 'untitled'
     end
     let range = ''
   else
