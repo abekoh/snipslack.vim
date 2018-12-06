@@ -38,7 +38,7 @@ Steps to get a token (last updated at Dec. 2, 2018):
 1. Scroll to top, click "Install App to Workspace" and authorize.
 1. Then you can get "Oauth Access Token".
 
-If you got a token, add following into your vim/neovim setting file.
+If you got a token, add following into your Vim/Neovim config file.
 ```
 let g:snipslack_token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 ```
@@ -73,24 +73,24 @@ If it succeeds, you can see snippet in Slack channel that you configured.
 
 ## Configuration
 
-Limit of snippet's line. Default: 1000.
+Limit of snippet's line. Default: `1000`
 ```
 g:snipslack_limit_lines = 500
 ```
 
-Enable to post with GitHub URL. If set 0 to disable. Default: 1.
+Enable to post with GitHub URL. If set 0 to disable. Default: `1`
 ```
 g:snipslack_enable_github_url = 0
 ```
 
 List of git's remote names. When get GitHub URL, search from head of this list. 
-Default: ['origin']
+Default: `['origin']`
 ```
 g:snipslack_github_remotes = ['origin', 'second']
 ```
 
 List of remote git service domains. You can set domains that is compatible to GitHub, like GitHub Enterprise.
-Default: ['github.com']
+Default: `['github.com']`
 ```
 g:snipslack_github_domains = ['github.com', 'my.github.enterprise.jp']
 ```
