@@ -1,5 +1,7 @@
 # snipslack.vim
 
+[![Powered by vital.vim](https://img.shields.io/badge/powered%20by-vital.vim-80273f.svg)](https://github.com/vim-jp/vital.vim)
+
 Post snippet from vim/neovim to Slack, instancely!
 
 ![snipslack_gif](https://user-images.githubusercontent.com/20609790/49587696-fcbe8880-f9a7-11e8-8927-4395caa27cd5.gif)
@@ -17,12 +19,12 @@ There are 3 features:
 
 ## Installation
 
-[dein.vim](https://github.com/Shougo/dein.vim):
+for [dein.vim](https://github.com/Shougo/dein.vim)
 ```
 call dein#add('abekoh/snipslack.vim')
 ```
 
-[vim-plug](https://github.com/junegunn/vim-plug):
+for [vim-plug](https://github.com/junegunn/vim-plug)
 ```
 Plug 'abekoh/snipslack.vim'
 ```
