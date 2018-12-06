@@ -2,8 +2,12 @@
 
 Post snippet from vim/neovim to Slack, instancely!
 
-## Features
+![snipslack_gif](https://user-images.githubusercontent.com/20609790/49587696-fcbe8880-f9a7-11e8-8927-4395caa27cd5.gif)
 
+There are 3 features:
+- Post with no options instancely.
+- With file name, line number and file-type syntax
+- Put GitHub URL as a comment (If remote repository is on Github)
 
 ## Requirements
 
@@ -66,3 +70,31 @@ above command. As a result command will be like this:
 :'<,'>SnipSlack
 ```
 If it succeeds, you can see snippet in Slack channel that you configured.
+
+## Configuration
+
+Limit of snippet's line. Default: 1000.
+```
+g:snipslack_limit_lines = 500
+```
+
+Enable to post with GitHub URL. If set 0 to disable. Default: 1.
+```
+g:snipslack_enable_github_url = 0
+```
+
+List of git's remote names. When get GitHub URL, search from head of this list. 
+Default: ['origin']
+```
+g:snipslack_github_remotes = ['origin', 'second']
+```
+
+List of remote git service domains. You can set domains that is compatible to GitHub, like GitHub Enterprise.
+Default: ['github.com']
+```
+g:snipslack_github_domains = ['github.com', 'my.github.enterprise.jp']
+```
+
+## Thanks
+- [vital.vim](https://github.com/vim-jp/vital.vim)
+- [vital-Whisky](https://github.com/lambdalisue/vital-Whisky)
