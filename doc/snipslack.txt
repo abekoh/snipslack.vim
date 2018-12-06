@@ -1,4 +1,4 @@
-*snipslack.txt*			Post snippet to Slack easily.
+*snipslack.txt*			Post snippet to Slack instancely.
 
 Version: 0.1.0
 Author: abekoh <abekoh.bcky@gmail.com>
@@ -16,7 +16,7 @@ Variables			|snipslack-variables|
 ==============================================================================
 INTRODUCTION					*snipslack-introduction* 
 
-*snipslack* is a Vim plugin to post snippet to Slack easily.
+*snipslack* is a Vim plugin to post snippet to Slack instancely.
 
 ==============================================================================
 SETUP						*snipslack-setup*
