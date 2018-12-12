@@ -46,6 +46,7 @@ end
 function! s:get_github_link(dirpath, filename, range) abort
   let cd_command = 'cd ' . a:dirpath . '; '
 
+	" get remote repository name
   let remote = ''
   let remote_url = ''
   for remote in g:snipslack_github_remotes
@@ -58,29 +59,35 @@ function! s:get_github_link(dirpath, filename, range) abort
     return
   endif
 
+	" get remote repository URL
   if match(remote_url, "^http.*$") == 0
+		" when URL is like 'git@github.com:abekoh/snipslack.vim.git'
+		" or 'ssh://git@github.com/abekoh/snipslack.git'
     let domain = matchlist(remote_url, '\v^.*\/\/(.*)\/.*$')[1]
     let url = matchlist(remote_url, '\v^(.{-})(.git|)\n$')[1]
   else
+		" when URL is like 'https://github.com/abekoh/snipslack.vim.git'
     let l = matchlist(remote_url, '\v^.*git\@(.{-})(:|\/)(.{-})(.git|)\n$')
     let domain = l[1]
     let url = 'https://' . domain . '/' . l[3]
   endif
-
   if match(g:snipslack_github_domains, domain) < 0
     return
   endif
 
+	" get HEAD branch name
   let branch = system(cd_command . 'git symbolic-ref --short HEAD')
   if v:shell_error > 0
     return
   endif
 
+	" get hash of remote/branch
   let hash = system(cd_command . 'git rev-parse ' . remote . '/' . branch)
   if v:shell_error > 0
     return
   endif
 
+	" get relative file path
   let git_dirpath = system(cd_command . 'git rev-parse --show-prefix')
   if v:shell_error > 0
     return
@@ -88,6 +95,7 @@ function! s:get_github_link(dirpath, filename, range) abort
 
   let url .= '/blob/' . hash . '/' . git_dirpath . a:filename . a:range
 
+	" construct Slack link text
   let comment = '<' . url . '|open URL in ' . remote . '/' . branch . '>'
   let comment = substitute(comment, '\n', '', 'g')
 
@@ -95,6 +103,8 @@ function! s:get_github_link(dirpath, filename, range) abort
 endfunction
 
 function! s:make_post_command(file, filename, title, github_link) abort
+	" use files.upload API
+	" https://api.slack.com/methods/files.upload
   let command = ['curl', '-s',
         \ '-F', 'file=@' . a:file,
         \ '--form-string', 'filename=' . a:filename,
