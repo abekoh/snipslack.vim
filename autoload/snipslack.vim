@@ -125,8 +125,10 @@ function! snipslack#post(filepath, filelastline) range abort
   let filename = fnamemodify(a:filepath, ':t')
   let dirpath = fnamemodify(a:filepath, ':p:h')
 
-  if a:lastline - a:filelastline + 1 > g:snipslack_limit_lines
-    echoh ErrorMsg | echom '[snipslack] Error: length of lines is greater than g:snipslack_limit_lines(=' . g:snipslack_limit_lines . ').' | echoh None
+  if a:lastline - a:firstline + 1 > g:snipslack_limit_lines
+    echoh ErrorMsg
+		echom '[snipslack] Error: length of lines is greater than g:snipslack_limit_lines(=' . g:snipslack_limit_lines . ').'
+		echoh None
     return
   endif
 
