@@ -46,7 +46,7 @@ end
 function! s:get_github_link(dirpath, filename, range) abort
   let cd_command = 'cd ' . a:dirpath . '; '
 
-	" get remote repository name
+  " get remote repository name
   let remote = ''
   let remote_url = ''
   for remote in g:snipslack_github_remotes
@@ -59,14 +59,14 @@ function! s:get_github_link(dirpath, filename, range) abort
     return
   endif
 
-	" get remote repository URL
+  " get remote repository URL
   if match(remote_url, "^http.*$") == 0
-		" when URL is like 'git@github.com:abekoh/snipslack.vim.git'
-		" or 'ssh://git@github.com/abekoh/snipslack.git'
+    " when URL is like 'git@github.com:abekoh/snipslack.vim.git'
+    " or 'ssh://git@github.com/abekoh/snipslack.git'
     let domain = matchlist(remote_url, '\v^.*\/\/(.*)\/.*$')[1]
     let url = matchlist(remote_url, '\v^(.{-})(.git|)\n$')[1]
   else
-		" when URL is like 'https://github.com/abekoh/snipslack.vim.git'
+    " when URL is like 'https://github.com/abekoh/snipslack.vim.git'
     let l = matchlist(remote_url, '\v^.*git\@(.{-})(:|\/)(.{-})(.git|)\n$')
     let domain = l[1]
     let url = 'https://' . domain . '/' . l[3]
@@ -75,19 +75,19 @@ function! s:get_github_link(dirpath, filename, range) abort
     return
   endif
 
-	" get HEAD branch name
+  " get HEAD branch name
   let branch = system(cd_command . 'git symbolic-ref --short HEAD')
   if v:shell_error > 0
     return
   endif
 
-	" get hash of remote/branch
+  " get hash of remote/branch
   let hash = system(cd_command . 'git rev-parse ' . remote . '/' . branch)
   if v:shell_error > 0
     return
   endif
 
-	" get relative file path
+  " get relative file path
   let git_dirpath = system(cd_command . 'git rev-parse --show-prefix')
   if v:shell_error > 0
     return
@@ -95,7 +95,7 @@ function! s:get_github_link(dirpath, filename, range) abort
 
   let url .= '/blob/' . hash . '/' . git_dirpath . a:filename . a:range
 
-	" construct Slack link text
+  " construct Slack link text
   let comment = '<' . url . '|open URL in ' . remote . '/' . branch . '>'
   let comment = substitute(comment, '\n', '', 'g')
 
@@ -103,8 +103,8 @@ function! s:get_github_link(dirpath, filename, range) abort
 endfunction
 
 function! s:make_post_command(file, filename, title, github_link) abort
-	" use files.upload API
-	" https://api.slack.com/methods/files.upload
+  " use files.upload API
+  " https://api.slack.com/methods/files.upload
   let command = ['curl', '-s',
         \ '-F', 'file=@' . a:file,
         \ '--form-string', 'filename=' . a:filename,
@@ -137,8 +137,8 @@ function! snipslack#post(filepath, filelastline) range abort
 
   if a:lastline - a:firstline + 1 > g:snipslack_limit_lines
     echoh ErrorMsg
-		echom '[snipslack] Error: length of lines is greater than g:snipslack_limit_lines(=' . g:snipslack_limit_lines . ').'
-		echoh None
+    echom '[snipslack] Error: length of lines is greater than g:snipslack_limit_lines(=' . g:snipslack_limit_lines . ').'
+    echoh None
     return
   endif
 
@@ -167,7 +167,7 @@ function! snipslack#post(filepath, filelastline) range abort
   let command = call('s:make_post_command', [file, filename, title, github_link])
 
   call s:Job.start(command, {
-    \ 'on_stdout': function('s:echo_success_message'),
-    \ 'on_stderr': function('s:echo_failure_message')
-    \})
+        \ 'on_stdout': function('s:echo_success_message'),
+        \ 'on_stderr': function('s:echo_failure_message')
+        \})
 endfunction
