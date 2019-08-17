@@ -71,7 +71,15 @@ function! s:get_github_link(dirpath, filename, range) abort
     let domain = l[1]
     let url = 'https://' . domain . '/' . l[3]
   endif
-  if match(g:snipslack_github_domains, domain) < 0
+  let is_domain_enable = 0
+  let available_domain = ''
+  for available_domain in g:snipslack_github_domains
+    if domain is# available_domain
+      let is_domain_enable = 1
+      break
+    endif
+  endfor
+  if is_domain_enable == 0
     return
   endif
 
