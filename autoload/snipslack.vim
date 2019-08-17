@@ -60,13 +60,13 @@ function! s:get_github_link(dirpath, filename, range) abort
   endif
 
   " get remote repository URL
-  if match(remote_url, "^http.*$") == 0
-    " when URL is like 'git@github.com:abekoh/snipslack.vim.git'
-    " or 'ssh://git@github.com/abekoh/snipslack.git'
+  if match(remote_url, '^http.*$') == 0
+    " when URL is like 'https://github.com/abekoh/snipslack.vim.git'
     let domain = matchlist(remote_url, '\v^.*\/\/(.*)\/.*$')[1]
     let url = matchlist(remote_url, '\v^(.{-})(.git|)\n$')[1]
   else
-    " when URL is like 'https://github.com/abekoh/snipslack.vim.git'
+    " when URL is like 'git@github.com:abekoh/snipslack.vim.git'
+    " or 'ssh://git@github.com/abekoh/snipslack.git'
     let l = matchlist(remote_url, '\v^.*git\@(.{-})(:|\/)(.{-})(.git|)\n$')
     let domain = l[1]
     let url = 'https://' . domain . '/' . l[3]
