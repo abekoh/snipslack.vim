@@ -104,7 +104,7 @@ function! s:get_github_link(dirpath, filename, range) abort
   let url .= '/blob/' . hash . '/' . git_dirpath . a:filename . a:range
 
   " construct Slack link text
-  let comment = '<' . url . '|open URL in ' . remote . '/' . branch . '>'
+  let comment = '<' . url . '|open link in ' . remote . '/' . branch . '>'
   let comment = substitute(comment, '\n', '', 'g')
 
   return comment
